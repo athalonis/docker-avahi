@@ -1,9 +1,10 @@
 version: '2'
 
 services:
-  avahi:
-    container_name: avahi
-    image: solidnerd/avahi:0.7
-    network_mode: host
-    volumes:
-    - ./avahi:/etc/avahi:ro
+    avahi:
+        restart: always
+        image: solidnerd/avahi:0.7
+        volumes:
+            - ./avahi-config:/etc/avahi
+        mem_limit: 64m
+        network_mode: "host"

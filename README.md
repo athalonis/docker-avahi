@@ -9,7 +9,7 @@ docker avahi
 
 ```bash
 docker create --name avahi-config solidnerd/avahi:0.7
-docker cp avahi-config:/etc/avahi .
+docker cp avahi-config:/etc/avahi avahi-config
 docker rm avahi-config
 ```
 
@@ -19,10 +19,10 @@ Edit your `avahi-daemon.conf` and set the following line.
 ```bash
 enable-dbus=no
 ```
-# Start the container 
+# Start the container
 
 ```bash
-docker run -d --net=host -v $(pwd)/avahi:/etc/avahi solidnerd/avahi:0.7
+docker run -d --net=host -v $(pwd)/avahi-config:/etc/avahi solidnerd/avahi:0.7
 ```
 
 ## Build the image
