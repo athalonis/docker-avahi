@@ -1,11 +1,9 @@
-FROM arm32v7/alpine:3.8
+FROM debian:buster-slim
 
-ARG AVAHI_VERSION=0.7
-ARG AVAHI_RELEASE=r1
 ARG BUILD_DATE
 ARG VCS_REF
 
-LABEL maintainer niclas@mietz.io
+LABEL maintainer bb@halonis.de
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.docker.dockerfile="/Dockerfile" \
@@ -16,8 +14,13 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-url="https://github.com/athalonis/docker-avahi.git" \
       org.label-schema.vcs-type="Git"
 
-RUN apk add --no-cache \
-    avahi=$AVAHI_VERSION-$AVAHI_RELEASE \
-    avahi-tools=$AVAHI_VERSION-$AVAHI_RELEASE
+RUN apt-get update -y && \
+    apt-get install --no-install-recommends -y \
+    avahi-daemon \
+    avahi-utils \
+    libnss-mdns && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* 
 
 ENTRYPOINT ["avahi-daemon"]
